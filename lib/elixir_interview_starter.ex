@@ -1,10 +1,10 @@
 defmodule ElixirInterviewStarter do
+  alias ElixirInterviewStarter.CalibrationServer
   @moduledoc """
   See `README.md` for instructions on how to approach this technical challenge.
   """
 
   alias ElixirInterviewStarter.CalibrationSession
-  alias ElixirInterviewStarter.CalibrationServer
 
   @spec start(user_email :: String.t()) :: {:ok, CalibrationSession.t()} | {:error, String.t()}
   @doc """
@@ -17,7 +17,8 @@ defmodule ElixirInterviewStarter do
     with {:ok, _pid} <- CalibrationServer.start(user_email) do
       get_current_session(user_email)
     else
-      _ -> {:error, "ocurred some error."}
+      {:error, {:already_started, _pid}} -> {:error, "This device is already started."}
+      _ -> {:error, "unknown error."}
     end
   end
 
@@ -30,8 +31,13 @@ defmodule ElixirInterviewStarter do
   with precheck 1, or their calibration session has already completed precheck 2, returns
   an error.
   """
-  def start_precheck_2(_user_email) do
-    {:ok, %CalibrationSession{}}
+  def start_precheck_2(user_email) do
+      with {:ok, state} <- CalibrationServer.start_precheck_2(user_email) do
+        {:ok, state}
+      else
+        {:error, :wrong_step} -> {:error, "that's the wrong step, probably you've run this again by mistake."}
+        _ -> {:error, "unknown error."}
+      end
   end
 
   @spec get_current_session(user_email :: String.t()) :: {:ok, CalibrationSession.t() | nil}

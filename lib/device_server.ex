@@ -13,4 +13,17 @@ defmodule ElixirInterviewStarter.DeviceServer do
     Process.send(String.to_atom(email), %{"precheck1" => true}, [])
     {:noreply, state}
   end
+
+  @impl true
+  def handle_info({email, "startPrecheck2"}, state) do
+    Process.send(String.to_atom(email), %{"submergedInWater" => true}, [])
+    Process.send(String.to_atom(email), %{"cartridgeStatus" => true}, [])
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({email, "calibrate"}, state) do
+    Process.send(String.to_atom(email), %{"calibrated" => true}, [])
+    {:noreply, state}
+  end
 end

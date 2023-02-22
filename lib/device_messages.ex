@@ -4,7 +4,7 @@ defmodule ElixirInterviewStarter.DeviceMessages do
 
   This module provides an interface for mock-sending commands to devices.
   """
-  @device_server Application.get_env(:elixir_interview_starter, :device_server)
+  @device_server Application.compile_env(:elixir_interview_starter, :device_server)
 
   @spec send(user_email :: String.t(), command :: String.t()) :: :ok
   @doc """
