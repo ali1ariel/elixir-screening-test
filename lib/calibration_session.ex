@@ -7,5 +7,5 @@ defmodule ElixirInterviewStarter.CalibrationSession do
 
   @type t() :: %__MODULE__{}
 
-  defstruct []
+  defstruct [:email, :step]
 end
