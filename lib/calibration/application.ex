@@ -1,7 +1,9 @@
-defmodule ElixirInterviewStarter.Calibration.Application do
+defmodule ElixirInterviewStarter.Application do
+  @device_server Application.compile_env(:elixir_interview_starter, :device_server)
+
   def start(_args, _) do
     children = [
-      ElixirInterviewStarter.DeviceServer
+      @device_server
     ]
 
 

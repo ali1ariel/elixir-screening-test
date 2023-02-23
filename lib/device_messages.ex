@@ -15,6 +15,4 @@ defmodule ElixirInterviewStarter.DeviceMessages do
   def send(user_email, command) do
     Process.send(@device_server, {user_email, command}, [])
   end
-
-  # def send(_user_email, _command), do: :ok
 end

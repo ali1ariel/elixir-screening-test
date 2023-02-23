@@ -32,12 +32,16 @@ defmodule ElixirInterviewStarter do
   an error.
   """
   def start_precheck_2(user_email) do
+    try do
       with {:ok, state} <- CalibrationServer.start_precheck_2(user_email) do
         {:ok, state}
       else
-        {:error, :wrong_step} -> {:error, "that's the wrong step, probably you've run this again by mistake."}
+        {:error, :wrong_step} -> {:error, "That's the wrong step, probably you've run this again by mistake."}
         _ -> {:error, "unknown error."}
       end
+    catch
+      :exit, {:noproc, _} -> {:error, "This device is not started."}
+    end
   end
 
   @spec get_current_session(user_email :: String.t()) :: {:ok, CalibrationSession.t() | nil}
@@ -45,6 +49,10 @@ defmodule ElixirInterviewStarter do
   Retrieves the ongoing `CalibrationSession` for the provided user, if they have one
   """
   def get_current_session(user_email) do
-    CalibrationServer.get_current_session(user_email)
+    try do
+      CalibrationServer.get_current_session(user_email)
+    catch
+      :exit, {:noproc, _} -> nil
+    end
   end
 end
